@@ -26,13 +26,13 @@ pipeline {
         )
         GIT_TAG_TO_USE = sh(
                 script: '''
-                    echo ${FILE_NAME_TO_UPLOAD} | sed -E 's/\\.\\.+//g | cut -d "-" -f2
+                    echo ${FILE_NAME_TO_UPLOAD} | sed -E 's/\\.\\.+//g' | cut -d "-" -f2
                 ''',
                 returnStdout: true
         )
         GIT_COMMIT_SHORT = sh(
                 script: '''
-                    echo ${FILE_NAME_TO_UPLOAD} | sed -E 's/\\.\\.+//g | cut -d "-" -f3
+                    echo ${FILE_NAME_TO_UPLOAD} | sed -E 's/\\.\\.+//g' | cut -d "-" -f3
                 ''',
                 returnStdout: true
         )
