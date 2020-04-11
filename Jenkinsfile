@@ -18,6 +18,7 @@ pipeline {
         BRANCH_TO_DEPLOY = 'automateWindowsInstallerCreation'
         DISCORD_WEBHOOK = credentials('991ce248-5da9-4068-9aea-8a6c2c388a19')
         GITHUB_TOKEN = credentials('cdc81429-53c7-4521-81e9-83a7992bca76')
+        DOMAIN = "download.spectreproject.io"
         FILE_NAME_TO_USE = sh(
                 script: '''
                         echo ${FILE_NAME_TO_UPLOAD} | sed -E 's/\\.\\.+//g'
@@ -59,8 +60,9 @@ pipeline {
                 sshagent(['upload-to-download-site']) {
                     sh(
                             script: """
-                                export
                                 if curl --output /dev/null --silent --fail -r 0-0 "https://github.com/spectrecoin/spectre/releases/download/${GIT_TAG_TO_USE}/${FILE_NAME_TO_USE}" ; then
+                                    sed -i "/download.spectreproject.io/d" ~/.ssh/known_hosts
+                                    echo \$(ssh-keyscan ${DOMAIN},`nslookup ${DOMAIN} | awk '/^Address: / { print \$2 ; exit }'`) >> ~/.ssh/known_hosts
                                     ssh jenkins@download.spectreproject.io "mkdir -p /var/www/html/files/${GIT_TAG_TO_USE} \\
                                         && if [ -e /var/www/html/files/${GIT_TAG_TO_USE}/${FILE_NAME_TO_USE} ] ; then rm -f /var/www/html/files/${GIT_TAG_TO_USE}/${FILE_NAME_TO_USE} ; fi \\
                                         && cd /var/www/html/files/${GIT_TAG_TO_USE} \\
