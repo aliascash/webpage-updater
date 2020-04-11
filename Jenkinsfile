@@ -59,7 +59,7 @@ pipeline {
                 sshagent(['upload-to-download-site']) {
                     sh(
                             script: """
-                                if curl --output /dev/null --silent --head --fail "https://github.com/spectrecoin/spectre/releases/download/${GIT_TAG_TO_USE}/${FILE_NAME_TO_UPLOAD}"; then
+                                if wget --spider "https://github.com/spectrecoin/spectre/releases/download/${GIT_TAG_TO_USE}/${FILE_NAME_TO_UPLOAD}" 2>/dev/null ; then
                                     ssh jenkins@download.spectreproject.io "mkdir -p /var/www/html/files/${GIT_TAG_TO_USE} \\
                                         && if [ -e /var/www/html/files/${GIT_TAG_TO_USE}/${FILE_NAME_TO_USE} ] ; then rm -f /var/www/html/files/${GIT_TAG_TO_USE}/${FILE_NAME_TO_USE} ; fi \\
                                         && cd /var/www/html/files/${GIT_TAG_TO_USE} \\
