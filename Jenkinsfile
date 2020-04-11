@@ -20,19 +20,19 @@ pipeline {
         GITHUB_TOKEN = credentials('cdc81429-53c7-4521-81e9-83a7992bca76')
         FILE_NAME_TO_USE = sh(
                 script: '''
-                        echo ${FILE_NAME_TO_UPLOAD//../}
+                        echo ${FILE_NAME_TO_UPLOAD} | sed -E 's/\\.\\.+//g'
                     ''',
                 returnStdout: true
         )
         GIT_TAG_TO_USE = sh(
                 script: '''
-                    echo ${FILE_NAME_TO_UPLOAD//../} | cut -d "-" -f2
+                    echo ${FILE_NAME_TO_UPLOAD} | sed -E 's/\\.\\.+//g | cut -d "-" -f2
                 ''',
                 returnStdout: true
         )
         GIT_COMMIT_SHORT = sh(
                 script: '''
-                    echo ${FILE_NAME_TO_UPLOAD//../} | cut -d "-" -f3
+                    echo ${FILE_NAME_TO_UPLOAD} | sed -E 's/\\.\\.+//g | cut -d "-" -f3
                 ''',
                 returnStdout: true
         )
