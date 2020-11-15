@@ -17,7 +17,7 @@ pipeline {
         // In case another branch beside master or develop should be deployed, enter it here
         BRANCH_TO_DEPLOY = 'automateWindowsInstallerCreation'
         DISCORD_WEBHOOK = credentials('DISCORD_WEBHOOK')
-        GITHUB_TOKEN = credentials('github-app')
+        GITHUB_CI_TOKEN = credentials('GITHUB_CI_TOKEN')
         DOMAIN = "download.spectreproject.io"
         FILE_NAME_TO_USE = sh(
                 script: '''
